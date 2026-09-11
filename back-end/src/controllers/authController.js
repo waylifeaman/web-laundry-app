@@ -102,3 +102,35 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+//untuk forgot password
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email wajib diisi' });
+    }
+
+    await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${process.env.FIREBASE_API_KEY}`,
+      {
+        requestType: 'PASSWORD_RESET',
+        email,
+      }
+    );
+
+    // Selalu balas sukses, walau email tidak terdaftar (lihat penjelasan di bawah)
+    res.json({ message: 'Jika email terdaftar, link reset password sudah dikirim' });
+  } catch (error) {
+    const message = error.response?.data?.error?.message;
+
+    if (message === 'EMAIL_NOT_FOUND') {
+      // Tetap balas sukses, JANGAN kasih tau email tidak ditemukan
+      return res.json({ message: 'Jika email terdaftar, link reset password sudah dikirim' });
+    }
+
+    res.status(500).json({ error: 'Gagal mengirim email reset password' });
+  }
+};

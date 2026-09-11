@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import AuthInput from "../components/AuthInput";
-import { register } from "../services/AuthService";
-import { COLORS } from "../../public/css/color";
+import AuthInput from "../../components/auth/AuthInput";
+import { register } from "../../services/AuthService";
+import { COLORS } from "../../../public/css/color";
 
 const RegisterPage = ()=>{
     const [formData, setFormData] = useState({

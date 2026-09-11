@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthInput from '../components/AuthInput';
-import { login } from '../services/AuthService';
+import AuthInput from '../../components/auth/AuthInput';
+import { login } from '../../services/AuthService';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import {COLORS} from '../../public/css/color'
+import {COLORS} from '../../../public/css/color'
 
 const LoginPage = () => {
     const location = useLocation();
@@ -60,7 +60,9 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     />
-
+                    <p style={{ fontSize: '14px', textAlign: 'right', marginBottom: '16px' }}>
+                        <Link to="/forgot-password">Lupa Password?</Link>
+                    </p>
                     {error && (
                     <p style={{ color: 'red', fontSize: '14px', marginBottom: '12px' }}>
                         {error}
