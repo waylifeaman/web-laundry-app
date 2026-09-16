@@ -27,7 +27,7 @@ const LoginPage = () => {
         localStorage.setItem('idToken', data.idToken);
         localStorage.setItem('outlet', JSON.stringify(data.outlet));
 
-        navigate('/dashboard');
+        navigate('/home');
         } catch (err) {
         setError(err.response?.data?.error || 'Login gagal, coba lagi');
         } finally {

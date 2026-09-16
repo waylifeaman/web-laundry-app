@@ -33,7 +33,22 @@
     --color-gray-900: #111827;
 }
 
-body{
-    background-color: var(--color-yellow);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main{
+    background-color: var(--color-orange);
     color: var(--color-blue);
+    margin-top: 0;   
+
+}
+
+a{
+    text-decoration: none;
+    color: var(--color-blue-dark);
+    
 }

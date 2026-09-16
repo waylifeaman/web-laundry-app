@@ -1,0 +1,14 @@
+{
+  "name": "laundry_app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start-backend": "node ./back-end/server.js",
+    "start-frontend": "npm run dev --prefix laundry-frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
