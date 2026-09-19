@@ -4,6 +4,7 @@ import DashboardPage from './pages/dashboard/DashboardPage';
 import RegisterPage from './pages/auth_pages/RegisterPage';
 import ForgotPasswordPage from './pages/auth_pages/ForgotPasswordPage';
 import RiwayatPage  from './pages/riwayat_page/RiwayatPage';
+import DetailOrder from './pages/riwayat_page/DetailOrderPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/riwayat' element={<RiwayatPage/>}/>
         
         <Route path="/home" element={<DashboardPage />} />
+        <Route path="/orders/:id" element={<DetailOrder />} />
         {/* Nanti tambah route dashboard di sini */}
       </Routes>
     </BrowserRouter>

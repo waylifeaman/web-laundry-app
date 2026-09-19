@@ -1,9 +1,11 @@
 import {COLORS} from '../../../public/css/color';
 import {formatRupiah} from '../../../public/shared/formatRupiah';
 import { MdRefresh } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
+export const CardOrder = ({ orders = []}) => {
+  const navigate = useNavigate();
 
-export const CardOrder = ({ value }) => {
   return (
     <>
      <style>{`
@@ -22,17 +24,18 @@ export const CardOrder = ({ value }) => {
         }
     .col-harga{
         text-align:center;
+        display: grid;
     }
     
   `}</style>       
     <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", justifyContent:'center', alignItems:'center'}}>  
-    {value.length === 0 ? (
+    {orders.length === 0 ? (
         <p>Tidak ada data</p>
       ) : (
-        value.map((item) => (
+        orders.map((item) => (
           <div
             key={item.id}
-            style={{ display: "grid", gridTemplateColumns: "0.5fr 2fr 1fr", backgroundColor: COLORS.gray[100], width: "90%", borderRadius: "10px", gap: '1rem', padding: "1rem"}}
+            style={{ display: "grid", gridTemplateColumns: "0.5fr 1fr 1.5fr 1fr ", backgroundColor: COLORS.gray[100], width: "90%", borderRadius: "10px", gap: '1rem', padding: "1rem"}}
           >
             <div className='tgl' style={{ display: 'grid', justifyContent:'center', textAlign:'center'}}>
                 <p style={{ color: COLORS.green.dark }}>{item.items[0] ?.service_type}</p>
@@ -48,6 +51,7 @@ export const CardOrder = ({ value }) => {
                     })}</p>
                     <p>||</p>
                     <p>Order: {item.invoice_no}</p>
+                    
                 </div>
                 <div>
                     <h1>{item.customer_name}</h1>
@@ -58,13 +62,29 @@ export const CardOrder = ({ value }) => {
                          style={{ backgroundColor: item.payment_status === "Lunas" ? COLORS.green.base : COLORS.yellow.dark, }}
                     >{item.payment_status}</p>
 
-                        <p className='btn' style={{ backgroundColor:'red', }} onClick={{  }}>Lihat</p>
+                        <p className='btn' style={{cursor:'pointer', backgroundColor:'red', }} onClick={()=>navigate(`/orders/${item.id}`)}>Lihat</p>
                 </div>
             </div>
+            <div style={{ display:'grid', gap:"0.5rem" }}>
+                    <div className='mid-line' style={{ display:"grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center"}}>
+                      <p>Item</p>
+                      <p>Jumlah</p>
+                      <p>Parfum</p>
+                    </div>
+                    <div style={{  display:"grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center"}}>
+                      <p>{item.items[0]?.product_name}<br/>{formatRupiah(item.items[0]?.price_per_unit)}</p>
+                      <p>x {item.items[0].qty} {item.items[0].product_type === "Kiloan"? "Kg" : "Pcs"}</p>
+                      <p>{item.perfume}<br/>{formatRupiah(item.perfume_price)}</p>
+                    </div>
+            </div>
             <div className='col-harga'>
-                <p style={{ textAlign:'center' }}>total</p>
-                <h3>{formatRupiah(item.total_price)}</h3>
-                <span><MdRefresh/></span>
+                <div className='mid-line' style={{ display: 'flex', justifyContent:'center'}}>
+                  <p>Total</p>
+                </div>
+                <div style={{ display: 'grid', gap:'1rem' }}>                  
+                  <h3>{formatRupiah(item.total_price)}</h3>
+                  <span ><MdRefresh size={30} style={{ cursor:'pointer', borderRadius: "10px" ,padding:'4px',backgroundColor: "var(--color-yellow-dark)" }}/></span>
+                </div>
             </div>
           </div>
         ))

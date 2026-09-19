@@ -134,3 +134,30 @@ export const forgotPassword = async (req, res) => {
     res.status(500).json({ error: 'Gagal mengirim email reset password' });
   }
 };
+
+//Untuk refresh token, agar tidak hilang tiap 1 jam 
+// authController.js
+export const refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({ error: 'Refresh token wajib diisi' });
+    }
+
+    const response = await axios.post(
+      `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`,
+      {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }
+    );
+
+    res.json({
+      idToken: response.data.id_token,
+      refreshToken: response.data.refresh_token,
+    });
+  } catch (error) {
+    res.status(401).json({ error: 'Refresh token tidak valid' });
+  }
+};

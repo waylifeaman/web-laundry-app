@@ -1,21 +1,24 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo} from 'react';
 import { debounce } from 'lodash';
 import SearchBar from '../../components/riwayat/SearchBar';
 import { getOrders } from '../../services/dailySummary';
 import {CardOrder} from "../../components/riwayat/CardOrder"
-
+import Header from '../../components/Header';
+import { TabStatus } from '../../components/riwayat/TabStatus';
+import { UseTabStatus } from '../../hooks/UseTabStatus';
 
 const RiwayatPage = () => {
   const [orders, setOrders] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
 
+  const {activeTab, statusList, changeTab} = UseTabStatus("semua")
+
   // Ambil semua order sekali di awal
   useEffect(() => {
     const fetchOrders = async () => {
       const data = await getOrders();
       setOrders(data)
-      console.log(data)
     };
     fetchOrders();
   }, []);
@@ -33,29 +36,49 @@ const RiwayatPage = () => {
 
   // Filter dijalankan tiap kali debouncedKeyword berubah
   const filteredOrders = useMemo(() => {
-    if (!debouncedKeyword) return orders;
+    let result = orders; 
+    
+    if(activeTab !== "semua"){
+      result = result.filter((order)=> order.status?.toLowerCase() === activeTab.toLowerCase())
+    }
 
-    const lowerKeyword = debouncedKeyword.toLowerCase();
 
-    return orders.filter((order) =>
-      order.invoice_no?.toLowerCase().includes(lowerKeyword) ||
-      order.customer_name?.toLowerCase().includes(lowerKeyword) ||
-      order.customer_phone?.includes(debouncedKeyword)
-    );
-  }, [orders, debouncedKeyword]);
+    if (debouncedKeyword) {
+      const lowerKeyword = debouncedKeyword.toLowerCase();
+      result = result.filter((order)=>
+        order.invoice_no?.toLowerCase().includes(lowerKeyword) ||
+        order.customer_name?.toLowerCase().includes(lowerKeyword) ||
+        order.customer_phone?.includes(debouncedKeyword)
+      )
+    };
+    return result    
+  }, [orders, activeTab, debouncedKeyword]);
 
   return (
-    <div style={{ padding: '24px' }}>
-      <h1>Daftar Order</h1>
-
-      <SearchBar
-        value={keyword}
-        onChange={handleSearchChange}
-        placeholder="Cari invoice, nama, atau no. HP..."
-      />
-        <CardOrder value={filteredOrders}/>
-
-    </div>
+    <>    
+      <Header/>
+      <div style={{ padding: '24px', display:'grid', gap:'1rem'}}>
+        <div style={{ display:'grid', gridTemplateColumns: "1fr 1fr"}}>
+          <h1>Daftar Order</h1>          
+          <div style={{display:'flex', justifyContent: "end" }}>
+            <SearchBar
+            value={keyword}
+            onChange={handleSearchChange}
+            placeholder="Cari invoice, nama, atau no. HP..."
+            
+          />
+          </div>
+          
+        </div>
+        
+        <TabStatus 
+          statusList={statusList} 
+          activeTab={activeTab} 
+          onChangeTab={changeTab}
+        />
+          <CardOrder orders={filteredOrders}/>
+      </div>
+    </>
   );
 };
 

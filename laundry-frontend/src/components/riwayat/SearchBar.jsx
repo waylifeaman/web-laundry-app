@@ -14,7 +14,6 @@ const SearchBar = ({ value, onChange, placeholder = 'Cari...' }) => {
         border: `1px solid ${COLORS.gray[300]}`,
         borderRadius: '8px',
         fontSize: '14px',
-        marginBottom: '16px',
       }}
     />
   );

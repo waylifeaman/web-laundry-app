@@ -1,13 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState} from "react";
+import {useOutlet} from '../hooks/useOutlet';
 
 const Header = ()=>{
-    const [outletName] = useState(()=>{
-        const outletData = localStorage.getItem('outlet')
-        return outletData ? JSON.parse(outletData).name : ''
-    })
-
-
+    const {outletName} = useOutlet(); 
     return (
         <>      
             <style>{`

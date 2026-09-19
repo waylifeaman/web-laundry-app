@@ -41,7 +41,7 @@
 }
 
 main{
-    background-color: var(--color-orange);
+    /* background-color: var(--color-orange); */
     color: var(--color-blue);
     margin-top: 0;   
 

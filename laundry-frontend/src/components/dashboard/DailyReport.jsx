@@ -1,5 +1,5 @@
 import { getDailySummary } from "../../services/dailySummary";
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { COLORS } from "../../../public/css/color";
 
 export const DailyReport = ()=>{
@@ -18,13 +18,13 @@ export const DailyReport = ()=>{
                 const data = await getDailySummary();
                 setSummary(data);
             }catch(err){
-                setError({error: err.message + "gagal memuatdata"})
+                setError(err.message + " - gagal memuat data");
             }finally{
                 setLoading(false)
             }
             
         };
-        (fetchSummary())
+        fetchSummary()
     },[])
 
 
@@ -41,28 +41,32 @@ export const DailyReport = ()=>{
                     }
 
                 .card-daily{
-                    background-color: var(--color-orange-light);
+                    background-color: ${COLORS.orange.light};
                     padding: 1rem;
                     border-radius: 10px;
                     display: flex;
                     flex-direction: column;
-                    gap: 1rem
+                    gap: 1rem;
+                    color: white;
                 }
             `}
                 
             </style>
-            <div className="container-daily">
-                {/* <div>
-                    <p>Hallo {user.owner_name}</p>
-                    <p>Kode Outlet {user.outlet_code}</p>
-                </div> */}
-                
+            <div className="container-daily">                            
                 <h3>Ringkasan Hari ini</h3>                
                 <div className="card-daily">
-                    <p>Pendapatan Harian</p>
-                    <h1>Rp {summary.totalPendapatan.toLocaleString('id-ID')}</h1>
-                    <p>Total Order: {summary.totalOrder}</p>
-                    <p>Kiloan: {summary.totalKiloan} Kg || Satuan: {summary.totalSatuan} Pcs</p>
+                    <div style={{ display:'flex', gap: "1rem" }}>
+                        <p>Hallo {user.owner_name}</p>
+                        <p> ({user.outlet_code})</p>
+                        <p>{user.role}</p>
+                    </div>
+                    <p>RINGKASAN HARI INI</p>
+                    <div style={{ backgroundColor: COLORS.orange.base, padding: '1rem', borderRadius: '15px', gap: '1rem', display: 'flex', flexDirection:'column' }}>
+                        <p>Pendapatan Harian</p>
+                        <h1>Rp {summary.totalPendapatan.toLocaleString('id-ID')}</h1>
+                        <p>Total Order: {summary.totalOrder}</p>
+                        <p>Kiloan: {summary.totalKiloan} Kg || Satuan: {summary.totalSatuan} Pcs</p>
+                    </div>
                 </div>
             </div>
         </>
